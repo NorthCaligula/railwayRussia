@@ -1,0 +1,641 @@
+* {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f2f2f2;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  height: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0;
+  background-color: #fff;
+  border-bottom: 1px solid #ccc;
+  position: relative;
+}
+
+.header-left, .header-right {
+  width: 300px;
+  position: relative;
+}
+
+.header-left::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 5px;
+  bottom: 5px;
+  width: 1px;
+  background-color: #ccc;
+}
+
+.header-right::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 15px;
+  bottom: 15px;
+  width: 1px;
+  background-color: #ccc;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-left img {
+  height: 80px;
+}
+
+.header-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 20px;
+  margin-top: 15px; /* <-- вот это добавили */
+}
+
+.login-container input {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  width: 200px;
+  font-size: 16px;
+  color: #000;
+}
+
+#login {
+  isolation: isolate;
+}
+
+.forgot-password {
+  margin-top: 5px; /* немного отступ сверху */
+  font-size: 13px;
+  color: #5D74B0;
+  cursor: pointer;
+  text-decoration: underline;
+  align-self: flex-start; /* чтобы подпись была под полем, а не по центру */
+}
+
+.password-section {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.button-block {
+  display: flex;
+  flex-direction: row; /* в один ряд с полями */
+  gap: 15px;
+  align-items: center;
+}
+
+.button-block button {
+  height: 40px;
+  padding: 0 20px;
+  border-radius: 10px;
+  border: none;
+  color: #fff;
+  background-color: #5D74B0;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.header-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 7px;
+}
+
+.header-title {
+  font-size: 14px;
+  text-align: right;
+}
+
+.header-author {
+  font-size: 14px;
+  text-align: right;
+}
+
+main {
+  display: flex;
+  flex: 1;
+  padding: 10px 5px;
+  overflow: hidden;
+}
+
+.left-panel {
+  width: 290px;
+  margin-right: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.top-blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-grow: 1;
+}
+
+.block {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.block-title {
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+}
+
+.legend-placeholder {
+  display: flex;
+  color: #aaa;
+  margin-top: 5px;
+}
+
+.legend-placeholder input {
+  margin-right: 10px;
+}
+
+#editButton {
+  background-color: #D9D9D9;
+  border: none;
+  height: 40px;
+  border-radius: 10px;
+  cursor: not-allowed;
+}
+
+.map-container {
+  flex: 1;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+}
+
+/* Модальное окно */
+#modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  padding: 20px;
+  z-index: 1000;
+}
+
+.password-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.password-wrapper input {
+  width: 200px; /* чтобы совпадало с логином */
+}
+
+#password {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  width: 200px;
+  font-size: 16px;
+  color: #000;
+}
+
+#password::placeholder {
+  color: #7D7A7A;
+}
+
+#years button {
+  transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s;
+}
+
+.active-year-button {
+  background-color: #5D74B0 !important;
+  color: #fff !important;
+  transform: scale(1.05); /* немного увеличивается */
+  box-shadow: 0 4px 12px rgba(93, 116, 176, 0.4); /* мягкая синяя тень */
+  z-index: 1;
+}
+
+.loading-year-button {
+  background-color: #999 !important;
+  color: #fff;
+  animation: pulse 1s infinite;
+  cursor: wait !important;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+#years {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scrollbar-color: #5D74B0 #ccc; /* стильный scrollbar в поддерживаемых браузерах */
+  scrollbar-width: thin;
+}
+
+#years::-webkit-scrollbar {
+  height: 8px;
+}
+
+#years::-webkit-scrollbar-thumb {
+  background-color: #5D74B0;
+  border-radius: 4px;
+}
+
+#years::-webkit-scrollbar-track {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+#years button {
+  min-width: 80px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  border: none;
+  background-color: #ccc;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s;
+}
+#legend-block {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-bottom: 11px;
+  gap: 10px;
+}
+
+#legend-block .legend-placeholder {
+  display: flex;
+  flex-direction: column;  /* Убедимся, что элементы идут вертикально */
+  color: #aaa;
+  margin-top: 5px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 5px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+.legend-item input[type="checkbox"] {
+  margin: 0 auto; /* по центру */
+  transform: scale(1.2); /* чуть крупнее */
+}
+
+.legend-item span {
+  flex: 1;
+  text-align: left;
+  font-size: 15px;
+}
+
+.ol-popup {
+  position: absolute;
+  background-color: white;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #cccccc;
+  bottom: 12px;
+  left: -50px;
+  min-width: 200px;
+  font-size: 14px;
+  color: black;
+}
+
+.ol-popup-closer {
+  text-decoration: none;
+  position: absolute;
+  top: 2px;
+  right: 8px;
+  color: #666;
+  font-weight: bold;
+}
+
+.ol-popup-closer:hover {
+  color: black;
+}
+
+@keyframes legend-glow {
+  0% {
+    box-shadow: 0 0 5px #5D74B0, 0 0 10px #5D74B0;
+  }
+  50% {
+    box-shadow: 0 0 15px #8C9BC4, 0 0 25px #8C9BC4;
+  }
+  100% {
+    box-shadow: 0 0 5px #5D74B0, 0 0 10px #5D74B0;
+  }
+}
+
+.highlighted-legend {
+  animation: legend-glow 2s infinite ease-in-out;
+  border-radius: 5px; /* чтобы свет красиво обтекал форму */
+  padding: 3px 6px;   /* лёгкий отступ внутри */
+  background-color: white; /* обычный фон — белый или какой захочешь */
+}
+
+/* Стиль для таблицы */
+.popup-table {
+  width: 100%;
+  border-collapse: collapse; /* Убираем промежутки между ячейками */
+}
+
+.popup-table th, .popup-table td {
+  padding: 8px;
+  text-align: left;
+  border-top: 1px solid #ccc; /* Внутренние линии между строками */
+  border-left: 1px solid #ccc; /* Внутренние линии между столбцами */
+}
+
+/* Убираем линию слева в первой колонке и сверху в первой строке */
+.popup-table th:first-child, .popup-table td:first-child {
+  border-left: none;
+}
+
+.popup-table th {
+  font-weight: bold;
+  background-color: #f9f9f9; /* Легкий фон для заголовков */
+}
+
+.popup-table td {
+  background-color: #fff;
+}
+
+.popup-table tr:last-child td {
+  border-bottom: 1px solid #ccc; /* Линия внизу последней строки */
+}
+
+#recover-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: flex-start; /* <-- Прижимаем вверх */
+  padding-top: 10vh; /* <-- Отступ сверху 1/5 экрана примерно */
+  z-index: 1001;
+  animation: fadeIn 0.4s ease forwards;
+}
+
+#recover-modal.show {
+  display: flex;
+}
+
+#recover-modal.hide {
+  animation: fadeOut 0.4s ease forwards;
+  pointer-events: none; /* Блокирует взаимодействие, пока окно анимируется */
+}
+
+#recover-modal .modal-content {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 30px 40px;
+  width: 400px;
+  max-width: 90%;
+  text-align: center;
+  transform: translateY(-20px);
+  opacity: 0;
+  animation: slideIn 0.4s ease forwards;
+}
+
+.modal-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  background-color: #5D74B0;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Анимация для плавного закрытия */
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-50px); }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+}
+
+#login-error-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4); /* чуть прозрачнее, как recover */
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 10vh;
+  z-index: 1001;
+  animation: fadeIn 0.4s ease forwards;
+}
+
+#login-error-modal.show {
+  display: flex;
+}
+
+#login-error-modal .modal-content {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 30px 40px;
+  width: 400px;
+  max-width: 90%;
+  text-align: center;
+  transform: translateY(-20px);
+  opacity: 0;
+  animation: slideIn 0.4s ease forwards;
+  position: relative;
+}
+
+#login-error-modal .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#login-error-modal button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#login-error-modal button:hover {
+  background-color: #d32f2f;
+}
+
+
+#register-modal .modal-content {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 30px 40px;
+  width: 400px;
+  max-width: 90%;
+  text-align: center;
+  transform: translateY(-20px);
+  opacity: 0;
+  animation: slideIn 0.4s ease forwards;
+}
+
+/* поля внутри */
+#register-form input,
+#register-form select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+.gender-block {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 10px 0;
+}
+
+.gender-block label {
+  font-size: 14px;
+  color: #333;
+}
+
+#register-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 10vh;
+  z-index: 1001;
+  animation: fadeIn 0.4s ease forwards;
+}
+
+#register-modal.show {
+  display: flex;
+  animation: fadeIn 0.4s ease forwards;
+}
+
+#register-modal.hide {
+  animation: fadeOut 0.4s ease forwards;
+  pointer-events: none; /* Блокирует взаимодействие, пока окно анимируется */
+}
+
+/* Стили для подсветки ошибки */
+.input-error {
+  border: 2px solid red;
+}
+
+/* Стили для текста ошибки */
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+  font-family: Arial, sans-serif;
+}
+
+/* Стили для подсветки ошибки */
+.input-error {
+  border: 2px solid red;
+}
+
+/* Стили для текста ошибки */
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+  font-family: Arial, sans-serif;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
