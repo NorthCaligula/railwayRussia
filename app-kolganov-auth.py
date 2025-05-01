@@ -58,14 +58,19 @@ def login():
     try:
         logger.debug(f"Looking for user {username} in the database")
         # Обновленный запрос, с учетом использования username вместо id
-        cur.execute('SELECT username, password_hash FROM usersauth WHERE username = %s', (username,))
+        cur.execute('''
+            SELECT ua.username, ua.password_hash, pp.name
+            FROM usersauth ua
+            JOIN personprofile pp ON ua.username = pp.username
+            WHERE ua.username = %s
+        ''', (username,))
         user = cur.fetchone()
 
         if not user:
             logger.warning(f"User {username} not found")
             return jsonify({'error': 'User not found'}), 404
 
-        _, password_hash = user
+        _, password_hash, name = user
         logger.debug(f"User {username} found, checking password...")
 
         if not bcrypt.checkpw(password.encode('utf-8'), password_hash.encode('utf-8')):
@@ -95,7 +100,13 @@ def login():
 
         logger.info(f"Login time updated for user {username}")
 
-        return jsonify({'access_token': token})
+        logger.info(f"RealName {name}")
+
+        return jsonify({
+            'access_token': token,
+            'name': name,
+            'state': 'correctUser'  # можно сделать 'correctAdmin' при необходимости
+        })
 
     except Exception as e:
         logger.error(f"An error occurred: {e}")
