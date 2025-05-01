@@ -43,8 +43,13 @@
 
   <div id="login-error-modal" class="modal">
     <div class="modal-content">
-      <span id="close-login-error-modal" class="close">&times;</span>
       <p id="login-error-message"></p>
+    </div>
+  </div>
+
+  <div id="welcome-modal" class="modal">
+    <div class="modal-content">
+      <p id="welcome-text"></p>
     </div>
   </div>
 
@@ -90,7 +95,7 @@
           </div>
         </div>
       </div>
-      <button id="edit-button" class="blockable-button">Редактировать</button>
+      <button id="edit-button" disabled onclick="submitOffer()">Предложить улучшение</button>
     </div>
 
     <div class="map-container">
@@ -101,9 +106,23 @@
       </div>
     </div>
   </main>
+  <!-- Модальное окно редактирования -->
+  <div id="offer-modal" class="offer-modal-overlay" style="display: none;">
+    <div class="offer-modal">
+      <span class="offer-close-button" onclick="closeOfferModal()">&times;</span>
+      <h2>Предложить оффер</h2>
 
+      <textarea id="offer-text" placeholder="Опишите ваш оффер..." rows="5"></textarea>
+      <input id="offer-coords" placeholder="Координаты (необязательно)" />
+      <button onclick="submitOffer()">Отправить</button>
+    </div>
+  </div>
   <script src="https://cdn.jsdelivr.net/npm/ol@v7.3.0/dist/ol.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v7.3.0/ol.css">
-  <script src="./main.js"></script>
+  <script src="./JS/offer.js"></script>
+  <script src="./JS/auth.js"></script>
+  <script src="./JS/years-layers.js"></script>
+  <script src="./JS/map.js"></script>
+  <script src="./JS/main.js"></script>
 </body>
 </html>
