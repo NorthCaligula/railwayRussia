@@ -310,8 +310,8 @@ function closeRecoverModal() {
 
 // Функция входа
 async function handleLogin() {
-    const username = document.getElementById('login').value;  // Поменял login на username
-    const password = document.getElementById('password').value;
+    const username = document.getElementById('login-input').value;  // Поменял login на username
+    const password = document.getElementById('password-input').value;
 
     if (!username || !password) {
         openLoginErrorModal("Пожалуйста, введите логин и пароль.");
@@ -371,7 +371,7 @@ async function loadYears() {
     try {
         const res = await fetch('http://127.0.0.1:5001/api/ruszhdtransit/start');
         const data = await res.json();
-        const container = document.getElementById('years');
+        const container = document.getElementById('years-container');
         const sorted = data.sort((a, b) => a.order - b.order);
 
         sorted.forEach(item => {
@@ -386,10 +386,19 @@ async function loadYears() {
     }
 }
 
-// Очистка подсветки и закрытие попапа при переключении года
+/**
+ * Обработчик клика по кнопке выбора года.
+ * Загружает слои для выбранного года, обновляет карту и легенду.
+ * @param {Object} item - Объект с данными года (содержит item.id).
+ * @param {HTMLElement} btn - DOM-элемент кнопки, по которой был клик.
+ */
 async function handleYearButtonClick(item, btn) {
-    const allYearButtons = document.querySelectorAll('#years button');
+    const allYearButtons = document.querySelectorAll('#years-container button');
     const allBlockableButtons = document.querySelectorAll('.blockable-button');
+
+    // Если кнопка уже активна — не делаем повторную загрузку
+    if (btn.classList.contains('active-year-button')) return;
+
     document.body.style.cursor = 'wait';
     allBlockableButtons.forEach(b => b.disabled = true);
     btn.classList.add('loading-year-button');
@@ -398,19 +407,14 @@ async function handleYearButtonClick(item, btn) {
         const res = await fetch(`http://127.0.0.1:5001/api/ruszhdtransit/work/${item.id}`);
         const data = await res.json();
 
-        // Удаляем старые слои
         map.getLayers().getArray()
             .filter(layer => layer.get('customLayer'))
             .forEach(layer => map.removeLayer(layer));
 
-        // Очищаем легенду
         document.querySelector('#legend-block .legend-placeholder').innerHTML = '';
-
-        // Очистка подсветки и закрытие попапа
         highlightSource.clear();
         popupOverlay.setPosition(undefined);
 
-        // Загрузка новых слоев и обновление легенды
         data.layers.forEach(layerData => {
             const features = new ol.format.GeoJSON().readFeatures({
                 type: 'FeatureCollection',
@@ -419,25 +423,19 @@ async function handleYearButtonClick(item, btn) {
                 featureProjection: 'EPSG:3857'
             });
 
-            const vectorSource = new ol.source.Vector({features});
+            const vectorSource = new ol.source.Vector({ features });
 
             let layerStyle;
-
-            // Определяем стиль для слоя
             if (layerData.style) {
                 if ('radius' in layerData.style) {
-                    // Это точка
                     const fillColor = layerData.style.fillColor || '#0000ff';
                     const fillOpacity = layerData.style.fillOpacity !== undefined ? layerData.style.fillOpacity : 1;
-
                     const rgbaFillColor = hexToRgba(fillColor, fillOpacity);
 
                     layerStyle = new ol.style.Style({
                         image: new ol.style.Circle({
                             radius: layerData.style.radius || 5,
-                            fill: new ol.style.Fill({
-                                color: rgbaFillColor
-                            }),
+                            fill: new ol.style.Fill({ color: rgbaFillColor }),
                             stroke: new ol.style.Stroke({
                                 color: layerData.style.strokeColor || '#000000',
                                 width: layerData.style.strokeWidth || 1
@@ -445,40 +443,40 @@ async function handleYearButtonClick(item, btn) {
                         })
                     });
                 } else {
-                    // Это линия или полигон
                     layerStyle = new ol.style.Style({
                         stroke: new ol.style.Stroke({
                             color: layerData.style.strokeColor || '#000000',
                             width: layerData.style.strokeWidth || 2
                         }),
                         fill: new ol.style.Fill({
-                            color: layerData.style.fillColor ? hexToRgba(layerData.style.fillColor, layerData.style.fillOpacity ?? 0.1) : 'rgba(0,0,255,0.1)'
+                            color: layerData.style.fillColor
+                                ? hexToRgba(layerData.style.fillColor, layerData.style.fillOpacity ?? 0.1)
+                                : 'rgba(0,0,255,0.1)'
                         })
                     });
                 }
             }
 
-            // Создание слоя
             const vectorLayer = new ol.layer.Vector({
                 source: vectorSource,
                 visible: layerData.visible || false,
                 style: layerStyle,
-                properties: {id: layerData.id, name: layerData.name}
+                properties: { id: layerData.id, name: layerData.name }
             });
 
             vectorLayer.set('customLayer', true);
             map.addLayer(vectorLayer);
 
-            // Добавление элемента в легенду
             const legendItem = document.createElement('div');
             legendItem.classList.add('legend-item');
+
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.checked = layerData.visible || false;
+            checkbox.dataset.layerId = layerData.id;
+
             checkbox.onchange = () => {
                 vectorLayer.setVisible(checkbox.checked);
-
-                // Если этот слой сейчас выделен в попапе - обновить и его галочку
                 if (highlightedFeature) {
                     const popupCheckbox = document.getElementById('toggle-layer');
                     if (popupCheckbox) {
@@ -486,25 +484,25 @@ async function handleYearButtonClick(item, btn) {
                     }
                 }
             };
-            checkbox.dataset.layerId = layerData.id;
 
             const label = document.createElement('span');
             label.textContent = layerData.name;
 
             legendItem.appendChild(checkbox);
             legendItem.appendChild(label);
-
             document.querySelector('#legend-block .legend-placeholder').appendChild(legendItem);
         });
 
-        // Обновляем стиль кнопок годов
+        // Обновляем стили всех кнопок годов
         allYearButtons.forEach(b => {
             b.classList.remove('active-year-button', 'loading-year-button');
             b.style.backgroundColor = '#ccc';
             b.style.color = '#000';
         });
 
+        // Выделяем текущую кнопку как активную
         btn.classList.add('active-year-button');
+
     } catch (err) {
         console.error('Ошибка при загрузке данных для года:', err);
         alert('Произошла ошибка при загрузке данных.');
@@ -512,11 +510,9 @@ async function handleYearButtonClick(item, btn) {
         popupOverlay.setPosition(undefined);
         document.body.style.cursor = 'default';
         allBlockableButtons.forEach(b => b.disabled = false);
+        btn.classList.remove('loading-year-button');
     }
 }
-
-// Загружаем данные по годам при инициализации
-loadYears();
 
 //Подгружаем города в модалку регистрации
 async function loadCities() {
@@ -644,3 +640,6 @@ function hideSpinner() {
     document.getElementById("register-spinner").style.display = "none";
     document.querySelector("#register-form button[type=submit]").disabled = false;
 }
+
+// Загружаем данные по годам при инициализации
+loadYears();
