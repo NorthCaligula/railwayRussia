@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Железные дороги ЦФО</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Модальные окна -->
+  <div id="recover-modal" class="modal">
+    <div class="modal-content">
+      <p>Обратитесь по адресу <b>dkolganov2000@gmail.com</b> для восстановления пароля</p>
+    </div>
+  </div>
+
+  <div id="register-modal" class="modal">
+    <div class="modal-content">
+      <h2>Регистрация</h2>
+      <form id="register-form">
+        <!-- Поля формы остаются без изменений -->
+      </form>
+    </div>
+  </div>
+
+  <div id="login-error-modal" class="modal">
+    <div class="modal-content">
+      <span id="close-login-error-modal" class="close">&times;</span>
+      <p id="login-error-message"></p>
+    </div>
+  </div>
+
+  <header>
+    <div class="header-left">
+      <img src="/image/mainImage.svg" alt="Эмблема">
+    </div>
+    <div class="header-center">
+      <div id="login-form" class="login-container">
+        <input id="login-input" placeholder="Введите логин">
+
+        <div class="password-section">
+          <div class="password-wrapper">
+            <input id="password-input" type="password" placeholder="Введите пароль">
+            <div id="recover-link" class="forgot-password">Забыли пароль?</div>
+          </div>
+        </div>
+
+        <div id="auth-buttons" class="button-block">
+          <button id="login-button" class="blockable-button">Вход</button>
+          <button id="register-button" class="blockable-button">Регистрация</button>
+        </div>
+      </div>
+    </div>
+    <!-- Остальная часть header без изменений -->
+  </header>
+
+  <main>
+    <!-- Блоки с картой и легендой остаются без изменений -->
+    <div class="left-panel">
+      <div class="top-blocks">
+        <div class="block" id="years-block">
+          <div class="block-title">Год сети</div>
+          <div id="years-container"></div>
+        </div>
+        <div class="block" id="legend-block">
+          <div class="block-title">Легенда</div>
+          <div id="legend-content" class="legend-placeholder">
+            <span>Выберите год, чтобы отобразить данные</span>
+          </div>
+        </div>
+      </div>
+      <button id="edit-button" class="blockable-button">Редактировать</button>
+    </div>
+
+    <div class="map-container">
+      <div id="map"></div>
+      <div id="popup" class="ol-popup">
+        <a href="#" id="popup-closer" class="ol-popup-closer">✖</a>
+        <div id="popup-content"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/ol@v7.3.0/dist/ol.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v7.3.0/ol.css">
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

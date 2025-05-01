@@ -201,6 +201,13 @@ map.on('click', function (evt) {
                     legendCheckbox.checked = this.checked;
                 }
             });
+            // Добавляем слушатель на изменение видимости слоя
+            layer.on('change:visible', function () {
+                const popupCheckbox = document.getElementById('toggle-layer');
+                if (popupCheckbox && popupCheckbox.checked !== layer.getVisible()) {
+                    popupCheckbox.checked = layer.getVisible();
+                }
+            });
         }
     } else {
         // Если объект не найден, скрываем попап и очищаем подсветку
@@ -240,10 +247,6 @@ popupCloser.onclick = function () {
 
     return false;
 };
-
-function recoverPassword() {
-    openRecoverModal();
-}
 
 function openRecoverModal() {
     const modal = document.getElementById('recover-modal');
@@ -363,11 +366,6 @@ function logout() {
     document.querySelector('.button-block').innerHTML = ''; // Убираем кнопку выхода
 }
 
-// Открытие модального окна
-function openModal() {
-    document.getElementById('modal').style.display = 'block';
-}
-
 // Загружаем данные по годам
 async function loadYears() {
     try {
@@ -477,7 +475,17 @@ async function handleYearButtonClick(item, btn) {
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.checked = layerData.visible || false;
-            checkbox.onchange = () => vectorLayer.setVisible(checkbox.checked);
+            checkbox.onchange = () => {
+                vectorLayer.setVisible(checkbox.checked);
+
+                // Если этот слой сейчас выделен в попапе - обновить и его галочку
+                if (highlightedFeature) {
+                    const popupCheckbox = document.getElementById('toggle-layer');
+                    if (popupCheckbox) {
+                        popupCheckbox.checked = checkbox.checked;
+                    }
+                }
+            };
             checkbox.dataset.layerId = layerData.id;
 
             const label = document.createElement('span');
@@ -510,6 +518,7 @@ async function handleYearButtonClick(item, btn) {
 // Загружаем данные по годам при инициализации
 loadYears();
 
+//Подгружаем города в модалку регистрации
 async function loadCities() {
     try {
         const response = await fetch('http://localhost:5002/cities');
