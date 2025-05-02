@@ -20,4 +20,4 @@ def get_style(name_obj):
     return style
 
 if __name__ == '__main__':
-    app.run(port=5052, debug=True)
+    app.run(port=5004, debug=True)

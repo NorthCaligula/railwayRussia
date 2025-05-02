@@ -95,7 +95,7 @@
           </div>
         </div>
       </div>
-      <button id="edit-button" disabled onclick="submitOffer()">Предложить улучшение</button>
+      <button id="edit-button" disabled onclick="openOfferModal()">Предложить улучшение</button>
     </div>
 
     <div class="map-container">
@@ -106,17 +106,37 @@
       </div>
     </div>
   </main>
-  <!-- Модальное окно редактирования -->
-  <div id="offer-modal" class="offer-modal-overlay" style="display: none;">
-    <div class="offer-modal">
-      <span class="offer-close-button" onclick="closeOfferModal()">&times;</span>
-      <h2>Предложить оффер</h2>
 
-      <textarea id="offer-text" placeholder="Опишите ваш оффер..." rows="5"></textarea>
-      <input id="offer-coords" placeholder="Координаты (необязательно)" />
-      <button onclick="submitOffer()">Отправить</button>
+  <!-- Модальное окно оффера -->
+  <div id="offer-modal" class="modal">
+    <div class="modal-content-offer" onclick="event.stopPropagation()">
+      <h2>Предложить улучшение</h2>
+
+      <div class="radio-options">
+        <label>
+          <input type="radio" name="offer-type" value="text" checked onchange="toggleOfferMode()"> Предложить улучшение текстом
+        </label>
+        <label>
+          <input type="radio" name="offer-type" value="data" onchange="toggleOfferMode()"> Предложить данные
+        </label>
+      </div>
+
+      <!-- Блок для годов -->
+      <div id="offer-years-block" style="display: none; margin-top: 15px;">
+        <div id="offer-years-container"></div>
+      </div>
+
+      <textarea id="offer-textarea" placeholder="Опишите ваше предложение..." rows="5" style="width: 100%; margin-top: 15px;"></textarea><!-- Блок загрузки и предпросмотра данных -->
+      <div id="data-offer-block" style="display: none; margin-top: 20px;">
+        <input type="file" id="geojson-upload" accept=".geojson,.json" />
+        <div id="preview-map" style="width: 100%; height: 300px; margin-top: 10px; border: 1px solid #ccc;"></div>
+      </div>
+      <button id="offer-submit-btn" onclick="submitOffer()" style="margin-top: 15px;">Отправить</button>
+      <div id="offer-feedback" style="margin-top: 10px; display: none;"></div>
+
     </div>
   </div>
+  <body onload="toggleOfferMode()"></body>
   <script src="https://cdn.jsdelivr.net/npm/ol@v7.3.0/dist/ol.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v7.3.0/ol.css">
   <script src="./JS/offer.js"></script>
