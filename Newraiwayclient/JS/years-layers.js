@@ -2,7 +2,7 @@
 // Загружаем данные по годам
 async function loadYears() {
     try {
-        const res = await fetch('http://127.0.0.1:5001/api/ruszhdtransit/start');
+        const res = await fetch('http://127.0.0.1:5000/ruszhdtransit/start');
         const data = await res.json();
         const container = document.getElementById('years-container');
         const sorted = data.sort((a, b) => a.order - b.order);
@@ -37,7 +37,7 @@ async function handleYearButtonClick(item, btn) {
     btn.classList.add('loading-year-button');
 
     try {
-        const res = await fetch(`http://127.0.0.1:5001/api/ruszhdtransit/work/${item.id}`);
+        const res = await fetch(`http://127.0.0.1:5000/ruszhdtransit/work/${item.id}`);
         const data = await res.json();
 
         map.getLayers().getArray()
@@ -60,6 +60,10 @@ async function handleYearButtonClick(item, btn) {
 
             let layerStyle;
             if (layerData.style) {
+                // Проверка, если стиль является стандартным
+                if (isDefaultStyle(layerData.style)) {
+                    console.warn('Используется стандартный стиль для слоя', layerData.id, '- проверьте сервис стилей!');
+                }
                 if ('radius' in layerData.style) {
                     const fillColor = layerData.style.fillColor || '#0000ff';
                     const fillOpacity = layerData.style.fillOpacity !== undefined ? layerData.style.fillOpacity : 1;
@@ -94,8 +98,12 @@ async function handleYearButtonClick(item, btn) {
                 source: vectorSource,
                 visible: layerData.visible || false,
                 style: layerStyle,
-                properties: { id: layerData.id, name: layerData.name }
+                properties: { id: layerData.id, name: layerData.name}
             });
+
+            if (layerData.isBack) {
+                vectorLayer.set('interactive', false);
+            }
 
             vectorLayer.set('customLayer', true);
             map.addLayer(vectorLayer);
@@ -151,4 +159,8 @@ async function handleYearButtonClick(item, btn) {
         });
         btn.classList.remove('loading-year-button');
     }
+}
+
+function isDefaultStyle(style) {
+  return style.color === '#000000' && style.strokeWidth === 2;
 }

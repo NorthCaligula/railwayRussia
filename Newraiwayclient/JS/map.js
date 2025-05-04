@@ -53,7 +53,10 @@ map.on('click', function (evt) {
     }
 
     // Находим объект по клику
-    const feature = map.forEachFeatureAtPixel(evt.pixel, function (feature) {
+    const feature = map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
+        if (layer && layer.get('interactive') === false) {
+            return null;
+        }
         return feature;
     });
 

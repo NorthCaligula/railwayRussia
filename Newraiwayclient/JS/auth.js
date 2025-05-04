@@ -94,7 +94,7 @@ async function handleLogin() {
     }
 
     try {
-        const res = await fetch('http://127.0.0.1:5002/login', {
+        const res = await fetch('http://127.0.0.1:5000/ruszhdtransit/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -183,7 +183,7 @@ function logout() {
 //Подгружаем города в модалку регистрации
 async function loadCities() {
     try {
-        const response = await fetch('http://localhost:5002/cities');
+        const response = await fetch('http://localhost:5000/ruszhdtransit/cities');
         const cities = await response.json();
         const citySelect = document.getElementById('citySelect');
 
@@ -249,7 +249,7 @@ document.getElementById("register-form").addEventListener("submit", async functi
 
     try {
         console.log("Отправляем данные на сервер:", registrationData);
-        const response = await fetch('http://localhost:5002/register', {
+        const response = await fetch('http://localhost:5000/ruszhdtransit/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

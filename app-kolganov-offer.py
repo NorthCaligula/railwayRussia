@@ -22,7 +22,7 @@ db = client['RussiaRailway']
 collectionsComment = db['textOffer']
 
 
-@app.route("/offer/text", methods=['POST'])
+@app.route("/api/kolganov-offer/offer/text", methods=['POST'])
 def get_offer_text():
     logger.info("➡️ Запрос к API /offer/text")
 
@@ -66,7 +66,7 @@ def get_offer_text():
         logger.error(f"💥 Ошибка при сохранении предложения в MongoDB: {e}")
         return jsonify({'error': 'Не удалось сохранить предложение'}), 500
 
-@app.route("/offer/data", methods=['POST'])
+@app.route("/api/kolganov-offer/offer/data", methods=['POST'])
 def get_offer_data():
     logger.info("➡️ Запрос к API /offer/data")
 
