@@ -541,21 +541,145 @@ main {
 
 .offer-modal button {
   margin-top: 15px;
-  padding: 10px;
+  padding: 10px 20px;
   width: 100%;
-  background-color: #007BFF;
+  background-color: #5D74B0;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
+  transition: background-color 0.3s ease;
 }
 
 .offer-modal button:hover {
-  background-color: #0056b3;
+  background-color: #4a5e91;
 }
+
 
 .offer-close-button {
   float: right;
   cursor: pointer;
   font-size: 20px;
 }
+
+/* Стили для годов */
+#offer-years-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scrollbar-color: #5D74B0 #ccc;
+  scrollbar-width: thin;
+  justify-content: center;
+}
+
+#offer-years-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+#offer-years-container::-webkit-scrollbar-thumb {
+  background-color: #5D74B0;
+  border-radius: 4px;
+}
+
+#offer-years-container::-webkit-scrollbar-track {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+#offer-years-container button {
+  min-width: 80px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  border: none;
+  background-color: #ccc;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+#offer-years-container .active-year-button {
+  background-color: #5D74B0;
+  color: white;
+}
+
+/* Радиокнопки по одной в строке */
+.radio-options label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+#offer-textarea {
+  width: 100%;
+  border: 2px solid #5D74B0;
+  border-radius: 10px;
+  padding: 10px;
+  resize: none;
+  font-size: 16px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+#offer-feedback.loading::after {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 3px solid #5D74B0;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  vertical-align: middle;
+  margin-left: 10px;
+}
+
+#offer-feedback.success {
+  color: green;
+  font-weight: bold;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.modal-content-offer {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 30px 40px;
+  width: 800px;
+  max-width: 90%;
+  text-align: center;
+  transform: translateY(-20px);
+  opacity: 0;
+  animation: slideIn 0.4s ease forwards;
+  position: relative;
+}
+
+.modal-content-offer #offer-submit-btn {
+  background-color: #5D74B0;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-content-offer #offer-submit-btn:hover:enabled {
+  background-color: #4a5e91;
+}
+
+.modal-content-offer #offer-submit-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  color: #666;
+}
+
