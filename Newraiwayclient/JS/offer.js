@@ -43,7 +43,7 @@ function closeOfferModal() {
 
 async function loadOfferYears() {
     try {
-        const res = await fetch('http://127.0.0.1:5001/api/ruszhdtransit/start');
+        const res = await fetch('http://127.0.0.1:5000/ruszhdtransit/start');
         const data = await res.json();
         const container = document.getElementById('offer-years-container');
         container.innerHTML = ''; // очищаем при повторном открытии
@@ -141,7 +141,7 @@ async function submitOffer() {
         }
 
         try {
-            const response = await fetch('http://127.0.0.1:5003/offer/text', {
+            const response = await fetch('http://127.0.0.1:5000/ruszhdtransit/offer/text', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -206,7 +206,7 @@ async function submitOffer() {
         const year_id = selectedYearBtn.textContent;
 
         try {
-            const response = await fetch('http://127.0.0.1:5003/offer/data', {
+            const response = await fetch('http://127.0.0.1:5000/ruszhdtransit/offer/data', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -170,7 +170,7 @@ main {
 .legend-placeholder {
   display: flex;
   color: #aaa;
-  margin-top: 5px;
+  margin-top: -15px;
 }
 
 .legend-placeholder input {
@@ -326,7 +326,6 @@ main {
   display: flex;
   flex-direction: column;
   color: #aaa;
-  margin-top: 5px;
 }
 
 .legend-item {

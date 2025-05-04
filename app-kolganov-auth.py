@@ -38,7 +38,7 @@ def get_db_connection():
 
 
 # Логика ручки логина
-@app.route('/login', methods=['POST'])
+@app.route('/api/kolganov-auth/login', methods=['POST'])
 def login():
     logger.info('Received a login request')
 
@@ -118,7 +118,7 @@ def login():
         logger.debug(f"Database connection closed")
 
 # Логика ручки регистрации
-@app.route('/register', methods=['POST'])
+@app.route('/api/kolganov-auth/register', methods=['POST'])
 def register():
     data = request.get_json()
     email = data.get('email')
@@ -174,7 +174,7 @@ def register():
         cur.close()
         conn.close()
 
-@app.route('/cities', methods=['GET'])
+@app.route('/api/kolganov-auth/cities', methods=['GET'])
 def get_cities():
     conn = get_db_connection()
     cur = conn.cursor()
