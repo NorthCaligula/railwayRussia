@@ -95,7 +95,7 @@
           </div>
         </div>
       </div>
-      <button id="edit-button" disabled onclick="openOfferModal()">Предложить улучшение</button>
+      <button id="edit-button" disabled onclick="openPropModal()">Предложить улучшение</button>
     </div>
 
     <div class="map-container">
@@ -108,38 +108,38 @@
   </main>
 
   <!-- Модальное окно оффера -->
-  <div id="offer-modal" class="modal">
-    <div class="modal-content-offer" onclick="event.stopPropagation()">
+  <div id="prop-modal" class="modal">
+    <div class="modal-content-prop" onclick="event.stopPropagation()">
       <h2>Предложить улучшение</h2>
 
       <div class="radio-options">
         <label>
-          <input type="radio" name="offer-type" value="text" checked onchange="toggleOfferMode()"> Предложить улучшение текстом
+          <input type="radio" name="prop-type" value="text" checked onchange="togglePropMode()"> Предложить улучшение текстом
         </label>
         <label>
-          <input type="radio" name="offer-type" value="data" onchange="toggleOfferMode()"> Предложить данные
+          <input type="radio" name="prop-type" value="data" onchange="togglePropMode()"> Предложить данные
         </label>
       </div>
 
       <!-- Блок для годов -->
-      <div id="offer-years-block" style="display: none; margin-top: 15px;">
-        <div id="offer-years-container"></div>
+      <div id="prop-years-block" style="display: none; margin-top: 15px;">
+        <div id="prop-years-container"></div>
       </div>
 
-      <textarea id="offer-textarea" placeholder="Опишите ваше предложение..." rows="5" style="width: 100%; margin-top: 15px;"></textarea><!-- Блок загрузки и предпросмотра данных -->
-      <div id="data-offer-block" style="display: none; margin-top: 20px;">
+      <textarea id="prop-textarea" placeholder="Опишите ваше предложение..." rows="5" style="width: 100%; margin-top: 15px;"></textarea><!-- Блок загрузки и предпросмотра данных -->
+      <div id="data-prop-block" style="display: none; margin-top: 20px;">
         <input type="file" id="geojson-upload" accept=".geojson,.json" />
         <div id="preview-map" style="width: 100%; height: 300px; margin-top: 10px; border: 1px solid #ccc;"></div>
       </div>
-      <button id="offer-submit-btn" onclick="submitOffer()" style="margin-top: 15px;">Отправить</button>
-      <div id="offer-feedback" style="margin-top: 10px; display: none;"></div>
+      <button id="prop-submit-btn" onclick="submitProp()" style="margin-top: 15px;">Отправить</button>
+      <div id="prop-feedback" style="margin-top: 10px; display: none;"></div>
 
     </div>
   </div>
-  <body onload="toggleOfferMode()"></body>
+  <body onload="togglePropMode()"></body>
   <script src="https://cdn.jsdelivr.net/npm/ol@v7.3.0/dist/ol.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v7.3.0/ol.css">
-  <script src="./JS/offer.js"></script>
+  <script src="./JS/prop.js"></script>
   <script src="./JS/auth.js"></script>
   <script src="./JS/years-layers.js"></script>
   <script src="./JS/map.js"></script>

@@ -19,7 +19,7 @@ DB_CONFIG = {
 
 # Инициализация Flask
 app = Flask(__name__)
-CORS(app)  # Включаем поддержку CORS
+CORS(app, expose_headers=['Authorization'], supports_credentials=True)  # Включаем поддержку CORS
 
 # Настройка логирования
 logging.basicConfig(level=logging.DEBUG)  # Уровень логирования

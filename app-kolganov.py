@@ -19,7 +19,7 @@ SERVICE_MAP = {
     'auth': 'http://127.0.0.1:5002',
     'object': 'http://127.0.0.1:5001',
     'style': 'http://127.0.0.1:5004',
-    'offer': 'http://127.0.0.1:5003'
+    'prop': 'http://127.0.0.1:5003'
 }
 
 
@@ -28,6 +28,7 @@ SERVICE_MAP = {
 @app.route('/ruszhdtransit/<path:path>', methods=['GET', 'POST'])
 def gateway(path):
     start_time = time.time()
+    print(dict(request.headers))
 
     # Определим микросервис
     service_name = detect_service(path)
@@ -44,11 +45,12 @@ def gateway(path):
     logger.info(f"Request data: {request.get_json(silent=True) or request.args}")
 
     try:
+        headers = {key: value for key, value in request.headers if key != 'Host'}
         # Проксируем запрос
         if request.method == 'GET':
-            resp = requests.get(full_url, params=request.args)
+            resp = requests.get(full_url, params=request.args, headers=headers)
         else:
-            resp = requests.post(full_url, json=request.get_json())
+            resp = requests.post(full_url, json=request.get_json(), headers=headers)
 
         duration = time.time() - start_time
         logger.info(f"✅ Response from '{service_name}' in {duration:.2f}s: status {resp.status_code}")
@@ -71,8 +73,8 @@ def detect_service(path):
         return 'object'
     elif path.startswith('data/'):
         return 'style'
-    elif path.startswith('offer/'):
-        return 'offer'
+    elif path.startswith('prop/'):
+        return 'prop'
     return None
 
 
