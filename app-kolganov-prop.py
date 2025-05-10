@@ -19,12 +19,13 @@ logger = logging.getLogger(__name__)
 # Подключение к MongoDB
 client = MongoClient('mongodb://localhost:27017/')
 db = client['RussiaRailway']
-collectionsComment = db['textOffer']
+collectionsComment = db['prop']
 
 
-@app.route("/api/kolganov-offer/offer/text", methods=['POST'])
-def get_offer_text():
-    logger.info("➡️ Запрос к API /offer/text")
+@app.route("/api/kolganov-prop/text", methods=['POST'])
+def get_prop_text():
+    logger.info("➡️ Запрос к API /kolganov-prop/text")
+    print(dict(request.headers))
 
     auth_header = request.headers.get('Authorization')
     if not auth_header or not auth_header.startswith("Bearer "):
@@ -66,9 +67,9 @@ def get_offer_text():
         logger.error(f"💥 Ошибка при сохранении предложения в MongoDB: {e}")
         return jsonify({'error': 'Не удалось сохранить предложение'}), 500
 
-@app.route("/api/kolganov-offer/offer/data", methods=['POST'])
-def get_offer_data():
-    logger.info("➡️ Запрос к API /offer/data")
+@app.route("/api/kolganov-prop/data", methods=['POST'])
+def get_prop_data():
+    logger.info("➡️ Запрос к API /kolganov-prop/data")
 
     auth_header = request.headers.get('Authorization')
     if not auth_header or not auth_header.startswith("Bearer "):

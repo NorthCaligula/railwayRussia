@@ -1,28 +1,28 @@
-let isOfferSubmitting = false; // глобальный флаг
+let isPropSubmitting = false; // глобальный флаг
 let previewMap;
 let previewVectorLayer;
 
-function openOfferModal() {
-    const modal = document.getElementById('offer-modal');
+function openPropModal() {
+    const modal = document.getElementById('prop-modal');
     modal.classList.add('show');
 
     // Обработчик закрытия по клику на фон
     modal.addEventListener('click', function (e) {
-        if (e.target === modal && !isOfferSubmitting) { // Кликнули именно на фон, а не на контент
-            closeOfferModal();
+        if (e.target === modal && !isPropSubmitting) { // Кликнули именно на фон, а не на контент
+            closePropModal();
         }
     }, {once: true}); // Чтобы обработчик повесился только один раз
 
 }
 
-function closeOfferModal() {
-    const modal = document.getElementById('offer-modal');
-    const content = modal.querySelector('.modal-content-offer');
-    const textarea = document.getElementById('offer-textarea');
-    const feedback = document.getElementById('offer-feedback');
+function closePropModal() {
+    const modal = document.getElementById('prop-modal');
+    const content = modal.querySelector('.modal-content-prop');
+    const textarea = document.getElementById('prop-textarea');
+    const feedback = document.getElementById('prop-feedback');
 
     content.style.animation = 'slideOut 0.4s ease forwards';
-    isOfferSubmitting = false;
+    isPropSubmitting = false;
 
     content.addEventListener('animationend', () => {
         modal.classList.remove('show');
@@ -33,19 +33,19 @@ function closeOfferModal() {
         feedback.style.display = 'none';
 
         // Включить обратно радиобаттоны
-        document.querySelectorAll('input[name="offer-type"]').forEach(el => el.disabled = false);
+        document.querySelectorAll('input[name="prop-type"]').forEach(el => el.disabled = false);
 
         // Снова разрешить закрытие модалки кликом вне
-        modal.onclick = () => closeOfferModal();
+        modal.onclick = () => closePropModal();
     }, {once: true});
 }
 
 
-async function loadOfferYears() {
+async function loadPropYears() {
     try {
         const res = await fetch('http://127.0.0.1:5000/ruszhdtransit/start');
         const data = await res.json();
-        const container = document.getElementById('offer-years-container');
+        const container = document.getElementById('prop-years-container');
         container.innerHTML = ''; // очищаем при повторном открытии
         const sorted = data.sort((a, b) => a.order - b.order);
 
@@ -55,7 +55,7 @@ async function loadOfferYears() {
             btn.classList.add('year-button');
             btn.onclick = () => {
                 // поведение при выборе года (можно запомнить выбранный ID)
-                document.querySelectorAll('#offer-years-container .year-button').forEach(b => {
+                document.querySelectorAll('#prop-years-container .year-button').forEach(b => {
                     b.classList.remove('active-year-button');
                 });
                 btn.classList.add('active-year-button');
@@ -68,46 +68,45 @@ async function loadOfferYears() {
     }
 }
 
-function toggleOfferMode() {
-    const type = document.querySelector('input[name="offer-type"]:checked').value;
-    const yearsBlock = document.getElementById('offer-years-block');
-    const textarea = document.getElementById('offer-textarea');
-    const modal = document.getElementById('offer-modal'); // Получаем модальное окно
+function togglePropMode() {
+    const type = document.querySelector('input[name="prop-type"]:checked').value;
+    const yearsBlock = document.getElementById('prop-years-block');
+    const textarea = document.getElementById('prop-textarea');
+    const modal = document.getElementById('prop-modal'); // Получаем модальное окно
 
     if (type === 'text') {
         textarea.style.display = 'block';
         yearsBlock.style.display = 'none';
-        document.getElementById('data-offer-block').style.display = 'none';
+        document.getElementById('data-prop-block').style.display = 'none';
 
         // Убираем увеличенный размер
         modal.classList.remove('enlarged');
     } else {
         textarea.style.display = 'none';
         yearsBlock.style.display = 'block';
-        loadOfferYears();
-        document.getElementById('data-offer-block').style.display = 'block';
+        loadPropYears();
+        document.getElementById('data-prop-block').style.display = 'block';
         setTimeout(() => initPreviewMap(), 200); // Задержка на отрисовку DOM
         // Увеличиваем модальное окно только по горизонтали
         modal.classList.add('enlarged');
     }
 }
 
-
-async function submitOffer() {
-    if (isOfferSubmitting) return;
-    isOfferSubmitting = true;
+async function submitProp() {
+    if (isPropSubmitting) return;
+    isPropSubmitting = true;
 
     const token = localStorage.getItem('authToken');
-    const offerType = document.querySelector('input[name="offer-type"]:checked').value;
-    const feedback = document.getElementById('offer-feedback');
-    const textarea = document.getElementById('offer-textarea');
-    const modal = document.getElementById('offer-modal');
-    const submitBtn = document.getElementById('offer-submit-btn');
+    const propType = document.querySelector('input[name="prop-type"]:checked').value;
+    const feedback = document.getElementById('prop-feedback');
+    const textarea = document.getElementById('prop-textarea');
+    const modal = document.getElementById('prop-modal');
+    const submitBtn = document.getElementById('prop-submit-btn');
 
     submitBtn.disabled = true;
     submitBtn.classList.add('disabled');
     textarea.readOnly = true;
-    document.querySelectorAll('input[name="offer-type"]').forEach(el => el.disabled = true);
+    document.querySelectorAll('input[name="prop-type"]').forEach(el => el.disabled = true);
     modal.onclick = null;
 
     feedback.className = 'loading';
@@ -115,15 +114,15 @@ async function submitOffer() {
     feedback.textContent = 'Отправка...';
 
     const resetUI = () => {
-        isOfferSubmitting = false;
+        isPropSubmitting = false;
         submitBtn.disabled = false;
         submitBtn.classList.remove('disabled');
         textarea.readOnly = false;
-        document.querySelectorAll('input[name="offer-type"]').forEach(el => el.disabled = false);
-        modal.onclick = () => closeOfferModal();
+        document.querySelectorAll('input[name="prop-type"]').forEach(el => el.disabled = false);
+        modal.onclick = () => closePropModal();
     };
 
-    if (offerType === 'text') {
+    if (propType === 'text') {
         const comment = textarea.value.trim();
         if (!comment) {
             resetUI();
@@ -141,7 +140,7 @@ async function submitOffer() {
         }
 
         try {
-            const response = await fetch('http://127.0.0.1:5000/ruszhdtransit/offer/text', {
+            const response = await fetch('http://127.0.0.1:5000/ruszhdtransit/prop/text', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -159,7 +158,7 @@ async function submitOffer() {
             feedback.textContent = 'Успешно отправлено!';
             setTimeout(() => {
                 resetUI();
-                closeOfferModal();
+                closePropModal();
             }, 1500);
         } catch (err) {
             console.error('Ошибка:', err);
@@ -167,7 +166,7 @@ async function submitOffer() {
             feedback.textContent = 'Не удалось отправить. Попробуйте позже.';
             resetUI();
         }
-    } else if (offerType === 'data') {
+    } else if (propType === 'data') {
         if (!token) {
             resetUI();
             feedback.className = '';
@@ -206,7 +205,7 @@ async function submitOffer() {
         const year_id = selectedYearBtn.textContent;
 
         try {
-            const response = await fetch('http://127.0.0.1:5000/ruszhdtransit/offer/data', {
+            const response = await fetch('http://127.0.0.1:5000/ruszhdtransit/prop/data', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -227,7 +226,7 @@ async function submitOffer() {
             feedback.textContent = 'Геоданные успешно отправлены!';
             setTimeout(() => {
                 resetUI();
-                closeOfferModal();
+                closePropModal();
             }, 1500);
         } catch (err) {
             console.error('Ошибка:', err);
