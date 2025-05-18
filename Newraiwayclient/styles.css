@@ -1,5 +1,12 @@
+@font-face {
+  font-family: 'Play';
+  src: url('/fonts/Play-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 * {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Play';
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -129,8 +136,15 @@ header {
 }
 
 .header-author {
-  font-size: 14px;
+  font-size: 17px;
   text-align: right;
+  margin-top: 20px;
+  color: #757575; /* Весь текст по умолчанию серый */
+}
+
+.header-author .author-name,
+.header-author .author-group {
+  color: #000; /* Имя и группа черные */
 }
 
 main {
@@ -488,7 +502,7 @@ main {
   color: red;
   font-size: 12px;
   margin-top: 5px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Play';
 }
 
 @keyframes spin {
@@ -548,7 +562,7 @@ main {
   border-radius: 10px;
   cursor: pointer;
   font-size: 16px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Play';
   transition: background-color 0.3s ease;
 }
 
@@ -667,7 +681,7 @@ main {
   border-radius: 10px;
   padding: 10px 20px;
   font-size: 16px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Play';
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
